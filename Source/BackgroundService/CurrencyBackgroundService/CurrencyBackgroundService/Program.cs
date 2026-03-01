@@ -1,4 +1,5 @@
 using System.Text;
+using CurrencyBackgroundService.Options;
 using CurrencyBackgroundService.Services;
 using FinanceService.Contracts.Validators;
 using FinanceService.Infrastructure.Persistence;
@@ -52,6 +53,9 @@ builder.Services.AddHostedService<CurrencyBackgroundWorker>();
 builder.Services.AddScoped<CurrencyUpdateService>();
 
 builder.Services.AddScoped<CurrencyUpdateDtoValidator>();
+
+builder.Services.Configure<CbrSettings>(
+    builder.Configuration.GetSection("CbrSettings"));
 
 var host = builder.Build();
 host.Run();

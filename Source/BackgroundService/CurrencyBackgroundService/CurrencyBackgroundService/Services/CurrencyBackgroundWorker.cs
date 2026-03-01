@@ -15,6 +15,8 @@ public class CurrencyBackgroundWorker(
 {
     private readonly TimeSpan _updateInterval =
         TimeSpan.FromMinutes(Math.Max(1, cbrOptions.Value.UpdateIntervalMinutes));
+
+    private DateOnly? _lastProcessedDate;
     
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -45,6 +47,12 @@ public class CurrencyBackgroundWorker(
             logger.LogInformation("Запуск обновления курсов валют");
 
             var currenciesForCertainDay = await cbrCurrencyFetcher.FetchCurrenciesAsync(cancellationToken);
+
+            if (_lastProcessedDate.HasValue && currenciesForCertainDay.Date <= _lastProcessedDate.Value)
+            {
+                logger.LogInformation("Обновлять валюту не надо. Т.к. за текущую дату ({Date}) уже были обновления", currenciesForCertainDay.Date);
+                return;
+            }
             
             await using var scope = scopeFactory.CreateAsyncScope();
             var currencyUpdateService = scope.ServiceProvider.GetRequiredService<CurrencyUpdateService>();
@@ -54,6 +62,8 @@ public class CurrencyBackgroundWorker(
             logger.LogInformation(
                 "Обновление курсов валют завершено успешно. Обновлено {Count} валют",
                 currenciesForCertainDay.Currencies.Count);
+            
+            _lastProcessedDate = currenciesForCertainDay.Date;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {

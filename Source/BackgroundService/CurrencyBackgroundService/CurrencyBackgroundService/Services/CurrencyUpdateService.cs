@@ -77,15 +77,11 @@ public class CurrencyUpdateService(
         // Ищем существующую валюту по CharCode
         var existingCurrency =
             await dbContext.Currencies.FirstOrDefaultAsync(c => c.CharCode == currency.CharCode, cancellationToken);
-
-        // Обновляем только, если дата свежей информации отличается
+        
         if (existingCurrency is not null)
         {
-            if (DateOnly.FromDateTime(existingCurrency.UpdatedAt) < latestInfoDate)
-            {
-                // Обновляем существующую валюту
-                existingCurrency.SetNewRate(currency.Rate);    
-            }
+            // Обновляем существующую валюту
+            existingCurrency.SetNewRate(currency.Rate);
         }
         else
         {

@@ -2,5 +2,5 @@
 
 public sealed class CbrSettings
 {
-    public int UpdateIntervalMinutes { get; set; } = 30;
+    public int UpdateIntervalMinutes { get; init; } = 10;
 }
