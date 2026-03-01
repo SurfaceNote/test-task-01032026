@@ -18,7 +18,7 @@ public class Currency
     public string CharCode { get; private set; } = null!;
     
     /// <summary>
-    /// Курс за 1 рубль
+    /// Курс за 1 единицу валюты
     /// </summary>
     public decimal Rate { get; private set; }
     
@@ -26,4 +26,22 @@ public class Currency
     
     // Навигационное свойство
     public List<UserFavoriteCurrency> FavoriteByUsers { get; set; } = [];
+
+    public Currency(string name, string charCode, decimal rate)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        CharCode = charCode;
+        Rate = rate;
+    }
+    
+    /// <summary>
+    /// Устанавливаем новый курс для валюты
+    /// </summary>
+    /// <param name="rate">Новый курс</param>
+    public void SetNewRate(decimal rate)
+    {
+        Rate = rate;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
