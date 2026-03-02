@@ -22,4 +22,19 @@ public class AuthController : ControllerBase
             AccessToken = result
         });
     }
+
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginUserCommand command,
+        [FromServices] LoginUserCommandHandler handler, CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(command, cancellationToken);
+
+        return Ok(new AuthResponse
+        {
+            AccessToken = result
+        });
+    }
 }

@@ -34,6 +34,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork<UserDbContext>>();
 
 builder.Services.AddScoped<RegisterUserCommandHandler>();
+builder.Services.AddScoped<LoginUserCommandHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
 
@@ -65,6 +66,10 @@ app.UseExceptionHandler(errorApp =>
             
             case UserAlreadyExistsException:
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
+                break;
+            
+            case InvalidCredentialsException:
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 break;
 
             default:
