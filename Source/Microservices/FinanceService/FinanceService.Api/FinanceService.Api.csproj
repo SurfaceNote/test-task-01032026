@@ -7,13 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Common.csproj" />
+        <ProjectReference Include="..\FinanceService.Contracts\FinanceService.Contracts.csproj" />
         <ProjectReference Include="..\FinanceService.Infrastructure\FinanceService.Infrastructure.csproj" />
     </ItemGroup>
 
