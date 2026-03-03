@@ -21,4 +21,11 @@ public interface IFavoriteCurrencyRepository
     /// <param name="userFavoriteCurrency">Валюта добавленная в избранное пользователем</param>
     /// <param name="cancellationToken">Токен отмены</param>
     Task AddAsync(UserFavoriteCurrency userFavoriteCurrency, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Получает список валют, которые были добавлены пользователем в избранное
+    /// </summary>
+    /// <param name="userId">ID пользователя</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    Task<IReadOnlyCollection<Currency>> GetFavoriteCurrenciesAsync(Guid userId, CancellationToken cancellationToken = default);
 }

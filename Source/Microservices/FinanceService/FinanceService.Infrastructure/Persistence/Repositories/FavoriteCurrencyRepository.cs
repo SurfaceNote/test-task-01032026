@@ -15,4 +15,12 @@ public class FavoriteCurrencyRepository(FinanceDbContext dbContext) : IFavoriteC
     {
         await dbContext.UserFavoriteCurrencies.AddAsync(userFavoriteCurrency, cancellationToken);
     }
+
+    public async Task<IReadOnlyCollection<Currency>> GetFavoriteCurrenciesAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.UserFavoriteCurrencies.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .Select(x => x.Currency)
+            .ToListAsync(cancellationToken);
+    }
 }

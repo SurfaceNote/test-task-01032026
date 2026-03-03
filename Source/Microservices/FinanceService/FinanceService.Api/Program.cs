@@ -62,6 +62,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork<FinanceDbContext>>();
 
 builder.Services.AddScoped<GetAllCurrenciesQueryHandler>();
 builder.Services.AddScoped<AddFavoriteCurrencyCommandHandler>();
+builder.Services.AddScoped<GetUserFavoriteCurrenciesQueryHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<AddFavoriteCurrencyCommandValidator>();
 

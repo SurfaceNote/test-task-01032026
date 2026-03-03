@@ -35,7 +35,7 @@ public class CurrenciesControllers : ControllerBase
 
     [HttpPost("favorites")]
     [Authorize]
-    public async Task<IActionResult> Add([FromBody] AddFavoriteCurrencyRequest request,
+    public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteCurrencyRequest request,
         [FromServices] AddFavoriteCurrencyCommandHandler handler, CancellationToken cancellationToken)
     {
         var command = new AddFavoriteCurrencyCommand
@@ -46,5 +46,31 @@ public class CurrenciesControllers : ControllerBase
         
         await handler.Handle(command, cancellationToken);
         return StatusCode(StatusCodes.Status201Created);
+    }
+
+    [HttpGet("favorites")]
+    [Authorize]
+    public async Task<IActionResult> GetFavorites([FromServices] GetUserFavoriteCurrenciesQueryHandler handler, CancellationToken cancellationToken)
+    {
+        var query = new GetUserFavoriteCurrenciesQuery
+        {
+            UserId = User.GetRequiredUserId()
+        };
+
+        var currencies = await handler.Handle(query, cancellationToken);
+        
+        // По хорошему. тут бы использовать либо автомаппер, либо написать свой маппер
+        var currenciesDto = new GetAllCurrenciesResponse
+        {
+            Currencies = currencies.OrderBy(c => c.CharCode).Select(c => new CurrencyDto
+            {
+                Id = c.Id,
+                CharCode = c.CharCode,
+                Rate = c.Rate,
+                UpdatedAt = c.UpdatedAt,
+
+            }).ToList()
+        };
+        return Ok(currenciesDto);
     }
 }
