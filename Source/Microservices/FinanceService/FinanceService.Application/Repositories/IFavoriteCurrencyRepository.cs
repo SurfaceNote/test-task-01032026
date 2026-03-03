@@ -28,4 +28,13 @@ public interface IFavoriteCurrencyRepository
     /// <param name="userId">ID пользователя</param>
     /// <param name="cancellationToken">Токен отмены</param>
     Task<IReadOnlyCollection<Currency>> GetFavoriteCurrenciesAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Удаляет валюту из избранного у пользователя
+    /// </summary>
+    /// <param name="userId">ID пользователя</param>
+    /// <param name="currencyId">ID валюты</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns></returns>
+    Task<bool> DeleteAsync(Guid userId, Guid currencyId, CancellationToken cancellationToken = default);
 }

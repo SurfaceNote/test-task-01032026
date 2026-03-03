@@ -63,6 +63,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork<FinanceDbContext>>();
 builder.Services.AddScoped<GetAllCurrenciesQueryHandler>();
 builder.Services.AddScoped<AddFavoriteCurrencyCommandHandler>();
 builder.Services.AddScoped<GetUserFavoriteCurrenciesQueryHandler>();
+builder.Services.AddScoped<RemoveFavoriteCurrencyCommandHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<AddFavoriteCurrencyCommandValidator>();
 
@@ -97,6 +98,7 @@ app.UseExceptionHandler(errorApp =>
                 break;
             
             case FavoriteCurrencyAlreadyExistsException:
+            case FavoriteCurrencyDoesntExistsException:
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 break;
 

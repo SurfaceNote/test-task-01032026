@@ -73,4 +73,18 @@ public class CurrenciesControllers : ControllerBase
         };
         return Ok(currenciesDto);
     }
+
+    [HttpDelete("favorites/{currencyId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> RemoveFavorite([FromRoute] Guid currencyId, [FromServices] RemoveFavoriteCurrencyCommandHandler handler, CancellationToken cancellationToken)
+    {
+        var command = new RemoveFavoriteCurrencyCommand
+        {
+            UserId = User.GetRequiredUserId(),
+            CurrencyId = currencyId
+        };
+        
+        await handler.Handle(command, cancellationToken);
+        return NoContent();
+    }
 }

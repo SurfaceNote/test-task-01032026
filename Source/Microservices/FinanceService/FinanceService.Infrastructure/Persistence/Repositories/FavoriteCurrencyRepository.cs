@@ -23,4 +23,19 @@ public class FavoriteCurrencyRepository(FinanceDbContext dbContext) : IFavoriteC
             .Select(x => x.Currency)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<bool> DeleteAsync(Guid userId, Guid currencyId, CancellationToken cancellationToken = default)
+    {
+        var existing =
+            await dbContext.UserFavoriteCurrencies.FirstOrDefaultAsync(
+                x => x.UserId == userId && x.CurrencyId == currencyId, cancellationToken);
+
+        if (existing == null)
+        {
+            return false;
+        }
+
+        dbContext.UserFavoriteCurrencies.Remove(existing);
+        return true;
+    }
 }
