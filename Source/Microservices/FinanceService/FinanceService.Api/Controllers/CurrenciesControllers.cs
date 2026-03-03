@@ -14,6 +14,9 @@ public class CurrenciesControllers : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(GetAllCurrenciesResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> GetAll([FromServices] GetAllCurrenciesQueryHandler handler, CancellationToken cancellationToken)
     {
         var currencies = await handler.Handle(new GetAllCurrenciesQuery(), cancellationToken);
@@ -35,6 +38,9 @@ public class CurrenciesControllers : ControllerBase
 
     [HttpPost("favorites")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteCurrencyRequest request,
         [FromServices] AddFavoriteCurrencyCommandHandler handler, CancellationToken cancellationToken)
     {
@@ -50,6 +56,9 @@ public class CurrenciesControllers : ControllerBase
 
     [HttpGet("favorites")]
     [Authorize]
+    [ProducesResponseType(typeof(GetAllCurrenciesResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> GetFavorites([FromServices] GetUserFavoriteCurrenciesQueryHandler handler, CancellationToken cancellationToken)
     {
         var query = new GetUserFavoriteCurrenciesQuery
@@ -76,6 +85,9 @@ public class CurrenciesControllers : ControllerBase
 
     [HttpDelete("favorites/{currencyId:guid}")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RemoveFavorite([FromRoute] Guid currencyId, [FromServices] RemoveFavoriteCurrencyCommandHandler handler, CancellationToken cancellationToken)
     {
         var command = new RemoveFavoriteCurrencyCommand
