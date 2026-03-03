@@ -1,8 +1,3 @@
 ﻿namespace UserService.Application.Exceptions;
 
-public class UserAlreadyExistsException : Exception
-{
-    public UserAlreadyExistsException(string name)
-        : base($"Пользователь {name} уже существует")
-    { }
-}
+public class UserAlreadyExistsException(string name) : Exception($"Пользователь {name} уже существует");

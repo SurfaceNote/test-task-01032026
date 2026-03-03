@@ -10,4 +10,9 @@ public class CurrencyRepository(FinanceDbContext dbContext) : ICurrencyRepositor
     {
         return await dbContext.Currencies.AsNoTracking().ToListAsync(cancellationToken);
     }
+
+    public async Task<bool> ExistsByIdAsync(Guid currencyId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Currencies.AsNoTracking().AnyAsync(c => c.Id == currencyId, cancellationToken);
+    }
 }

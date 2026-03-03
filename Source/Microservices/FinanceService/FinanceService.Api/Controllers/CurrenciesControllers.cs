@@ -1,4 +1,6 @@
-﻿using FinanceService.Application.Queries;
+﻿using FinanceService.Api.Extenstions;
+using FinanceService.Application.Commands;
+using FinanceService.Application.Queries;
 using FinanceService.Contracts.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,5 +31,20 @@ public class CurrenciesControllers : ControllerBase
             }).ToList()
         };
         return Ok(currenciesDto);
+    }
+
+    [HttpPost("favorites")]
+    [Authorize]
+    public async Task<IActionResult> Add([FromBody] AddFavoriteCurrencyRequest request,
+        [FromServices] AddFavoriteCurrencyCommandHandler handler, CancellationToken cancellationToken)
+    {
+        var command = new AddFavoriteCurrencyCommand
+        {
+            UserId = User.GetRequiredUserId(),
+            CurrencyId = request.CurrencyId
+        };
+        
+        await handler.Handle(command, cancellationToken);
+        return StatusCode(StatusCodes.Status201Created);
     }
 }
