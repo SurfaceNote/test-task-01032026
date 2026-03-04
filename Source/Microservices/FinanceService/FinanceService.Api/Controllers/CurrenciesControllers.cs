@@ -1,4 +1,4 @@
-﻿using FinanceService.Api.Extenstions;
+using FinanceService.Api.Extenstions;
 using FinanceService.Application.Commands;
 using FinanceService.Application.Queries;
 using FinanceService.Contracts.DTOs;
